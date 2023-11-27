@@ -68,4 +68,18 @@ resource "aws_iam_role_policy_attachment" "s3-policy-attachment" {
   policy_arn = aws_iam_policy.s3_full_access_policy.arn
 }
 
+resource "aws_redshift_cluster" "trans_decp_redshift_cluster" {
+  cluster_identifier = "${var.project_name}-redshift-cluster"
+  iam_roles = [
+    data.aws_iam_role.AWSServiceRoleForRedshift.arn,
+    aws_iam_role.s3_trans_decp_role.arn
+  ]
+  database_name   = var.database_name
+  master_username = var.admin_user
+  master_password = var.admin_password
+  node_type       = var.node_type
+  cluster_type    = var.cluster_type
+  number_of_nodes = var.nodes
 
+  skip_final_snapshot = true
+}
