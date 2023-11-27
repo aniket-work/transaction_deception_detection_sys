@@ -1,7 +1,7 @@
 
 variable "project_name" {
   type        = string
-  default     = "my-feast-project-aws-cerebrium"
+  default     = "transcation_deception_detection_system"
   description = "Unique project identifier for resource organization"
 }
 
