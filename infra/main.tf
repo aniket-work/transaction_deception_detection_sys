@@ -114,50 +114,7 @@ resource "aws_glue_catalog_table" "trans_decp_detect_features_table" {
       name = "transactionid"
       type = "BIGINT"
     }
-    columns {
-      name = "productcd"
-      type = "VARCHAR(32)"
-    }
-    columns {
-      name = "transactionamt"
-      type = "DOUBLE"
-    }
-    columns {
-      name = "p_emaildomain"
-      type = "VARCHAR(64)"
-    }
-    columns {
-      name = "r_emaildomain"
-      type = "VARCHAR(64)"
-    }
-    columns {
-      name = "card4"
-      type = "VARCHAR(32)"
-    }
-    columns {
-      name = "m1"
-      type = "VARCHAR(8)"
-    }
-    columns {
-      name = "m2"
-      type = "VARCHAR(8)"
-    }
-    columns {
-      name = "m3"
-      type = "VARCHAR(8)"
-    }
-    columns {
-      name = "event_timestamp"
-      type = "timestamp"
-    }
-    columns {
-      name = "created_timestamp"
-      type = "timestamp"
-    }
-    columns {
-      name = "isfraud"
-      type = "BIGINT"
-    }
+  
   }
   depends_on = [
     resource.aws_glue_catalog_database.glue_db
