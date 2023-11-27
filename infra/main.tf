@@ -83,3 +83,83 @@ resource "aws_redshift_cluster" "trans_decp_redshift_cluster" {
 
   skip_final_snapshot = true
 }
+
+
+resource "aws_glue_catalog_table" "trans_decp_detect_features_table" {
+  name          = "trans_decp_detect_features"
+  database_name = var.database_name
+
+  table_type = "EXTERNAL_TABLE"
+
+  parameters = {
+    EXTERNAL              = "TRUE"
+    "parquet.compression" = "SNAPPY"
+  }
+
+  storage_descriptor {
+    location      = "s3://${aws_s3_bucket.trans_decp_detect_s3_bucket.bucket}/trans_decp_detect_features/"
+    input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
+
+    ser_de_info {
+      name                  = "transcation-stream"
+      serialization_library = "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+
+      parameters = {
+        "serialization.format" = 1
+      }
+    }
+
+    columns {
+      name = "transactionid"
+      type = "BIGINT"
+    }
+    columns {
+      name = "productcd"
+      type = "VARCHAR(32)"
+    }
+    columns {
+      name = "transactionamt"
+      type = "DOUBLE"
+    }
+    columns {
+      name = "p_emaildomain"
+      type = "VARCHAR(64)"
+    }
+    columns {
+      name = "r_emaildomain"
+      type = "VARCHAR(64)"
+    }
+    columns {
+      name = "card4"
+      type = "VARCHAR(32)"
+    }
+    columns {
+      name = "m1"
+      type = "VARCHAR(8)"
+    }
+    columns {
+      name = "m2"
+      type = "VARCHAR(8)"
+    }
+    columns {
+      name = "m3"
+      type = "VARCHAR(8)"
+    }
+    columns {
+      name = "event_timestamp"
+      type = "timestamp"
+    }
+    columns {
+      name = "created_timestamp"
+      type = "timestamp"
+    }
+    columns {
+      name = "isfraud"
+      type = "BIGINT"
+    }
+  }
+  depends_on = [
+    resource.aws_glue_catalog_database.glue_db
+  ]
+}
